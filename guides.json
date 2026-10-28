@@ -1,0 +1,610 @@
+{
+  "checked_on": "2026-10-29",
+  "guides": [
+    {
+      "slug": "github",
+      "app": "GitHub",
+      "website": "https://github.com",
+      "auth_type": "OAuth App (GitHub also offers GitHub Apps, which it recommends)",
+      "difficulty": "Easy",
+      "difficulty_reason": "A single self-serve form. GitHub's docs describe no review or approval step for OAuth apps.",
+      "time": {
+        "headline": "About 15 minutes",
+        "best_case": "10 minutes",
+        "worst_case": "1 to 2 days if a customer's organisation restricts third-party apps and an owner must approve yours",
+        "basis": "Estimate. The docs give no timings. The organisation-approval rule comes from GitHub's docs."
+      },
+      "effort": "Low. One form and a callback URL. No documents to submit.",
+      "summary": "You can register a GitHub OAuth app yourself in minutes. The real decision is whether to build a GitHub App instead, which GitHub recommends for most new integrations.",
+      "composio_note": "If Composio manages OAuth for GitHub, you can skip registering your own app until you need your own consent-screen name, custom scopes or a separate rate-limit quota.",
+      "before_you_start": [
+        "A GitHub account that will own the app (a personal account or an organisation you administer).",
+        "Your app's public homepage URL.",
+        "Up to 10 callback URLs (one per environment, for example local and production).",
+        "A decision on OAuth App versus GitHub App (see Gotchas)."
+      ],
+      "steps": [
+        {
+          "title": "Choose OAuth App or GitHub App",
+          "detail": "GitHub says GitHub Apps are generally preferred: fine-grained permissions, short-lived tokens, and no organisation application policy applies to them. Choose an OAuth App if you need to act on everything a user can reach, or if you cannot use a GitHub App yet.",
+          "who": "agent"
+        },
+        {
+          "title": "Open the registration form",
+          "detail": "Profile picture, then Settings, then Developer settings, then OAuth apps, then New OAuth App.",
+          "who": "you"
+        },
+        {
+          "title": "Fill in the form",
+          "detail": "Application name, Homepage URL and Authorization callback URL are required. Description is optional. Use only information you consider public.",
+          "who": "either"
+        },
+        {
+          "title": "Set token options",
+          "detail": "Tick Enable Device Flow only if you will use it. 'Expire user access tokens' is on by default; clear it only if your app cannot handle short-lived tokens yet.",
+          "who": "you"
+        },
+        {
+          "title": "Register the application",
+          "detail": "Click Register application. You then get a client ID. Generate a client secret on the app's page and store it in a secrets manager, never in code.",
+          "who": "you"
+        },
+        {
+          "title": "Test the authorisation flow",
+          "detail": "Build the authorize URL with your client ID and requested scopes, sign in with a test account, and exchange the returned code for a token.",
+          "who": "agent"
+        }
+      ],
+      "approval": {
+        "required": false,
+        "process": "None described in GitHub's docs for OAuth apps. Registration is immediate.",
+        "what_can_block": [
+          "An organisation with an application access policy: only an organisation owner can approve an OAuth app there.",
+          "Requesting broad scopes such as repo, which owners may refuse."
+        ],
+        "if_blocked": [
+          "Ask the organisation owner to approve the app, and send them exactly which scopes you request and why.",
+          "Narrow your scopes, or move to a GitHub App, which is not subject to organisation application policies."
+        ]
+      },
+      "gotchas": [
+        "OAuth apps cannot use granular permissions: reading issues or pull requests needs the repo scope, which also covers repository contents.",
+        "OAuth app tokens share the user's rate limit of 5,000 requests per hour.",
+        "An OAuth app loses access when the authorising user loses access; a GitHub App keeps working if the installer leaves.",
+        "A user or organisation can own up to 100 OAuth apps, and each app can have up to 10 callback URLs."
+      ],
+      "agent_vs_you": {
+        "agent_can": [
+          "Recommend OAuth App versus GitHub App for your use case.",
+          "Draft the app name, description, callback URLs and a least-privilege scope list.",
+          "Build and test the authorize and token-exchange requests against a test account."
+        ],
+        "you_must": [
+          "Sign in and submit the registration form.",
+          "Generate and store the client secret.",
+          "Ask an organisation owner to approve the app if their policy requires it."
+        ]
+      },
+      "claims": [
+        {
+          "text": "The registration form requires application name, homepage URL and callback URL; you can add up to 10 callback URLs.",
+          "status": "sourced",
+          "source": "https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app"
+        },
+        {
+          "text": "No review or approval step is described for OAuth apps.",
+          "status": "sourced",
+          "source": "https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app",
+          "note": "Based on the page not mentioning one. Absence of a step in the docs is not proof that none exists."
+        },
+        {
+          "text": "A user or organisation can own up to 100 OAuth apps.",
+          "status": "sourced",
+          "source": "https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app"
+        },
+        {
+          "text": "GitHub Apps are generally preferred over OAuth apps; GitHub Apps cannot yet get permissions against an enterprise.",
+          "status": "sourced",
+          "source": "https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/differences-between-github-apps-and-oauth-apps"
+        },
+        {
+          "text": "If an organisation application policy is active, only an organisation owner can approve an OAuth app.",
+          "status": "sourced",
+          "source": "https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/differences-between-github-apps-and-oauth-apps"
+        },
+        {
+          "text": "OAuth app tokens share the user's 5,000 requests per hour limit.",
+          "status": "sourced",
+          "source": "https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/differences-between-github-apps-and-oauth-apps"
+        },
+        {
+          "text": "Where and how the client secret is generated.",
+          "status": "unverified",
+          "note": "The fetched page does not cover it. Stated from general knowledge of the settings page; confirm on screen."
+        },
+        {
+          "text": "The 15-minute time estimate.",
+          "status": "unverified",
+          "note": "My estimate. No official timing exists."
+        }
+      ],
+      "sources": [
+        {
+          "title": "Creating an OAuth app (GitHub Docs)",
+          "url": "https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app"
+        },
+        {
+          "title": "Differences between GitHub Apps and OAuth apps (GitHub Docs)",
+          "url": "https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/differences-between-github-apps-and-oauth-apps"
+        },
+        {
+          "title": "Composio: Managed authentication",
+          "url": "https://docs.composio.dev/toolkits/managed-auth"
+        }
+      ],
+      "last_checked": "2026-10-29",
+      "method": "Official documentation read. No setup was attempted."
+    },
+    {
+      "slug": "slack",
+      "app": "Slack",
+      "website": "https://slack.com",
+      "auth_type": "OAuth 2.0 (v2) Slack app",
+      "difficulty": "Moderate",
+      "difficulty_reason": "Quick for one workspace. Public distribution adds a checklist, HTTPS on every URL and, in some workspaces, admin approval. A Marketplace listing adds a review with no published timeline.",
+      "time": {
+        "headline": "About 1 hour for your own workspace; days if you distribute publicly; Marketplace review time is not published",
+        "best_case": "30 to 60 minutes (single workspace)",
+        "worst_case": "Unknown for the Marketplace: Slack's docs give no review timeline. Plan for weeks and ask Slack.",
+        "basis": "Estimates for setup; the Marketplace timeline is genuinely unknown."
+      },
+      "effort": "Medium. A real OAuth flow to implement, an HTTPS redirect URL and a distribution checklist.",
+      "summary": "Anyone can create a Slack app and install it in a workspace they control. Letting other workspaces install it requires activating public distribution and, depending on the workspace, admin approval. Marketplace listing is optional but recommended for commercial apps.",
+      "composio_note": "If Composio manages OAuth for Slack, your users see Composio's app on the consent screen. Register your own only if you need your own name, scopes, or Marketplace listing.",
+      "before_you_start": [
+        "A Slack workspace you control, for development.",
+        "An HTTPS redirect URL (Slack requires SSL on OAuth redirect and request URLs).",
+        "A least-privilege list of bot and user scopes.",
+        "A plan for onboarding users if the app will spread across many workspaces."
+      ],
+      "steps": [
+        {
+          "title": "Create the app",
+          "detail": "Create a new app from the Slack app dashboard and associate it with your development workspace.",
+          "who": "you"
+        },
+        {
+          "title": "Choose scopes",
+          "detail": "Under OAuth & Permissions, add bot scopes (your app's own identity) and user scopes (acting for a user). Request only what you need: admins weigh requested permissions when approving apps.",
+          "who": "agent"
+        },
+        {
+          "title": "Add an HTTPS redirect URL",
+          "detail": "Add it under OAuth & Permissions. The redirect_uri must use HTTPS and must match, or be a subdirectory of, a configured URL. If you configure several, send the same redirect_uri in both the authorize and token steps or you will get bad_redirect_uri.",
+          "who": "either"
+        },
+        {
+          "title": "Implement the install flow",
+          "detail": "Send users to https://slack.com/oauth/v2/authorize with your client_id, scope and user_scope. Slack returns a temporary code that expires after ten minutes. Exchange it, with your client secret, at oauth.v2.access. Verify the state parameter.",
+          "who": "agent"
+        },
+        {
+          "title": "Store the tokens",
+          "detail": "The bot token is the top-level access_token; a user token appears under authed_user. Store them securely. Slack OAuth tokens do not expire unless you enable token rotation.",
+          "who": "you"
+        },
+        {
+          "title": "Activate public distribution",
+          "detail": "In the app dashboard, open Manage Distribution, complete every checklist item, then click Activate Public Distribution. You get an Add to Slack button and a shareable install URL.",
+          "who": "you"
+        },
+        {
+          "title": "Optional: submit to the Slack Marketplace",
+          "detail": "Listed apps are reviewed against Slack's requirements and guidelines. Slack recommends submitting apps intended for commercial use. Listing allows direct installs.",
+          "who": "you"
+        }
+      ],
+      "approval": {
+        "required": false,
+        "process": "No Slack review is needed to install in your own workspace or to activate public distribution. Marketplace listing is reviewed. Individual workspaces may require admin approval to install your app.",
+        "what_can_block": [
+          "A workspace that only lets admins authorise apps, or only Marketplace-listed apps.",
+          "Requesting more scopes than you need.",
+          "Not supporting SSL on all required URLs, or an incomplete distribution checklist."
+        ],
+        "if_blocked": [
+          "Use the admin approval request flow and send the admin your scope list and purpose.",
+          "Consider a Marketplace listing if customers' workspaces only allow listed apps.",
+          "Ask Slack's developer support about review status; the docs give no timeline."
+        ]
+      },
+      "gotchas": [
+        "Scopes are additive across installs: you cannot remove scopes from an existing token without revoking it.",
+        "Combining Sign in with Slack user scopes with other scopes needs separate OAuth flows.",
+        "The team parameter is only a hint; check team.id or enterprise.id in the response to see where the app was installed.",
+        "Apps using scopes beyond bot, incoming-webhook, commands and identify are auto-uninstalled when the installing user leaves the workspace or becomes a guest.",
+        "Deactivating public distribution removes the app from every workspace except the original, and is not possible once the app is in the Marketplace."
+      ],
+      "agent_vs_you": {
+        "agent_can": [
+          "Propose a least-privilege scope list.",
+          "Write the authorize and token-exchange code and handle bad_redirect_uri, missing_scope and expired codes.",
+          "Draft onboarding copy and the admin approval request."
+        ],
+        "you_must": [
+          "Create the app in your Slack account.",
+          "Click Activate Public Distribution and complete the checklist.",
+          "Submit to the Marketplace and answer reviewer questions.",
+          "Handle the secrets (client secret and tokens)."
+        ]
+      },
+      "claims": [
+        {
+          "text": "The redirect_uri must use HTTPS and must match or be a subdirectory of a configured Redirect URL.",
+          "status": "sourced",
+          "source": "https://docs.slack.dev/authentication/installing-with-oauth/"
+        },
+        {
+          "text": "The temporary code expires after ten minutes and is exchanged at oauth.v2.access with the client secret.",
+          "status": "sourced",
+          "source": "https://docs.slack.dev/authentication/installing-with-oauth/"
+        },
+        {
+          "text": "Scopes cannot be removed from an existing token without revoking it; OAuth tokens do not expire unless rotation is used.",
+          "status": "sourced",
+          "source": "https://docs.slack.dev/authentication/installing-with-oauth/"
+        },
+        {
+          "text": "Public distribution needs OAuth 2.0, SSL on listed URLs, and completing the Manage Distribution checklist.",
+          "status": "sourced",
+          "source": "https://docs.slack.dev/app-management/distribution/"
+        },
+        {
+          "text": "Some workspaces allow only admins, or only Marketplace-listed apps, to authorise apps.",
+          "status": "sourced",
+          "source": "https://docs.slack.dev/app-management/distribution/"
+        },
+        {
+          "text": "Marketplace apps are reviewed; the page gives no review timeline.",
+          "status": "sourced",
+          "source": "https://docs.slack.dev/app-management/distribution/",
+          "note": "The missing timeline is itself a finding: it is not published there."
+        },
+        {
+          "text": "Any difference in API rate limits between listed and unlisted apps.",
+          "status": "unverified",
+          "note": "The distribution page does not mention rate limits. Check Slack's rate-limit documentation before relying on it."
+        },
+        {
+          "text": "The exact clicks to create a new app in the dashboard.",
+          "status": "unverified",
+          "note": "Not covered by the pages read. Confirm on screen."
+        }
+      ],
+      "sources": [
+        {
+          "title": "Installing with OAuth (Slack docs)",
+          "url": "https://docs.slack.dev/authentication/installing-with-oauth/"
+        },
+        {
+          "title": "App lifecycle & distribution (Slack docs)",
+          "url": "https://docs.slack.dev/app-management/distribution/"
+        },
+        {
+          "title": "Composio: Managed authentication",
+          "url": "https://docs.composio.dev/toolkits/managed-auth"
+        }
+      ],
+      "last_checked": "2026-10-29",
+      "method": "Official documentation read. No setup was attempted."
+    },
+    {
+      "slug": "google-gmail",
+      "app": "Google (Gmail and other restricted scopes)",
+      "website": "https://developers.google.com/identity",
+      "auth_type": "OAuth 2.0 with Google verification",
+      "difficulty": "Hard",
+      "difficulty_reason": "Easy while you stay in Testing mode, but any public app that requests sensitive or restricted scopes needs verification, and restricted scopes (such as full Gmail access) also need a security assessment.",
+      "time": {
+        "headline": "Same day in Testing mode; days to weeks for sensitive scopes; about 6 weeks plus a security assessment for restricted scopes",
+        "best_case": "Testing mode: under an hour, capped at 100 test users",
+        "worst_case": "Restricted scopes: Google's FAQ estimates 6 weeks for review, plus a separate security assessment that must be repeated every year",
+        "basis": "Review estimates are Google's own and are 'not guaranteed'. Assessment duration is not published."
+      },
+      "effort": "High. Domain ownership, public homepage and privacy policy, written scope justifications, a demo video, and for restricted scopes a third-party security assessment.",
+      "summary": "You can build and test with up to 100 named test users immediately. To let the public connect with sensitive or restricted scopes, you must pass Google's verification. Plan the verification and, for Gmail, the security assessment before you commit to a launch date.",
+      "composio_note": "If Composio manages OAuth for Google, you can launch on Composio's verified app. Register your own only if you need your own consent screen, custom scopes or separate quota, and then you carry the verification and assessment yourself.",
+      "before_you_start": [
+        "A Google Cloud project.",
+        "A domain you own, verified in Google Search Console, with a public homepage and a privacy policy on the same domain.",
+        "A list of the exact scopes and a written reason each needs to be that broad (and why a narrower scope will not do).",
+        "A demo video showing the full OAuth flow and each scope in use, uploaded to YouTube as Unlisted.",
+        "A budget and time for a security assessment if any scope is restricted."
+      ],
+      "steps": [
+        {
+          "title": "Create the project and OAuth client",
+          "detail": "Create a Google Cloud project, configure the consent screen (Google Auth Platform), and create a Web application OAuth client with your redirect URIs.",
+          "who": "you"
+        },
+        {
+          "title": "Build in Testing mode",
+          "detail": "Add up to 100 test users. Refresh tokens issued in Testing status expire after 7 days. Apps asking only for openid, email or profile are an exception to the test-user cap.",
+          "who": "either"
+        },
+        {
+          "title": "Decide your scopes",
+          "detail": "Classify each scope as non-sensitive, sensitive or restricted from Google's scope list. Choose the narrowest that works: it changes how long review takes.",
+          "who": "agent"
+        },
+        {
+          "title": "Verify your domain and publish pages",
+          "detail": "Verify ownership in Search Console. Publish a public homepage and a privacy policy on the same domain, linked from the consent screen.",
+          "who": "you"
+        },
+        {
+          "title": "Prepare the submission",
+          "detail": "Write a justification per scope and record the demo video in English, showing the consent screen with your app name, the client ID in the address bar, and each scope's functionality.",
+          "who": "agent"
+        },
+        {
+          "title": "Complete brand verification and publish branding",
+          "detail": "Brand verification usually finishes in minutes to a few business days. Publish the branding before requesting data access verification. A passed brand verification stays valid for 7 days.",
+          "who": "you"
+        },
+        {
+          "title": "Submit in the Verification Center and respond fast",
+          "detail": "Submit justifications and the video. Google's Trust & Safety team may email questions, and review can pause until you reply.",
+          "who": "you"
+        },
+        {
+          "title": "Restricted scopes only: security assessment",
+          "detail": "Complete the assessment with a CASA-authorised assessor (or a self-scan at the lowest tier if eligible). It must be repeated every year.",
+          "who": "you"
+        }
+      ],
+      "approval": {
+        "required": true,
+        "process": "Brand verification, then scope verification in the Verification Center. Restricted scopes add an annual security assessment. Google reviews; you respond to follow-up emails.",
+        "what_can_block": [
+          "A homepage or privacy policy that is missing, behind a login, or on a different domain.",
+          "Scope requests broader than the demo video shows.",
+          "Slow replies to Google's follow-up emails, which can pause review.",
+          "An unresolved critical vulnerability in the security assessment, which can suspend API use.",
+          "A Google Workspace admin who blocks or restricts your app, even if it is verified."
+        ],
+        "if_blocked": [
+          "Re-read the reviewer's email, fix exactly what it names, and resubmit with a clear changelog.",
+          "Drop to narrower scopes to move from restricted to sensitive, which avoids the security assessment.",
+          "If your customers are inside one Workspace organisation, an Internal app skips verification.",
+          "Meanwhile stay in Testing mode with named test users, or use Composio's managed app."
+        ]
+      },
+      "gotchas": [
+        "Unverified apps requesting sensitive or restricted scopes are capped at 100 new users over the project's lifetime. The cap cannot be reset.",
+        "If verification fails after you burn through the cap, Google sign-in can be disabled for your users.",
+        "Google's own pages give different review times for sensitive scopes: 3 to 5 business days on the verification page, 10 business days in the FAQ table. Plan for the longer figure.",
+        "Security assessment pricing is set between you and an independent assessor. Google itself does not charge. A vendor blog quotes $15,000 to $75,000; that source is dated and vendor-authored.",
+        "Adding a sensitive scope later means re-verification, so request what you need from the start."
+      ],
+      "agent_vs_you": {
+        "agent_can": [
+          "Classify your scopes and suggest narrower alternatives.",
+          "Draft scope justifications, the demo script and the privacy policy outline.",
+          "Check your homepage and privacy policy against Google's requirements.",
+          "Prepare the assessment questionnaire answers."
+        ],
+        "you_must": [
+          "Own and verify the domain, and publish the pages.",
+          "Record the demo video and upload it to YouTube.",
+          "Submit in the Verification Center and answer Google's emails.",
+          "Contract and pay the security assessor if needed."
+        ]
+      },
+      "claims": [
+        {
+          "text": "Public apps requesting sensitive or restricted scopes need verification before first public release.",
+          "status": "sourced",
+          "source": "https://developers.google.com/identity/protocols/oauth2/production-readiness/sensitive-scope-verification"
+        },
+        {
+          "text": "Required materials: verified domain, public homepage, privacy policy on the same domain, scope justifications, and an unlisted YouTube demo video in English.",
+          "status": "sourced",
+          "source": "https://developers.google.com/identity/protocols/oauth2/production-readiness/sensitive-scope-verification"
+        },
+        {
+          "text": "Sensitive scope verification typically takes 3 to 5 business days.",
+          "status": "conflict",
+          "source": "https://developers.google.com/identity/protocols/oauth2/production-readiness/sensitive-scope-verification",
+          "note": "Google's FAQ table says 10 business days. Both are official pages; the discrepancy is unresolved."
+        },
+        {
+          "text": "FAQ estimates: brand verification 2 to 3 business days, sensitive scopes 10 business days, restricted scopes 6 weeks; 'not guaranteed'.",
+          "status": "sourced",
+          "source": "https://support.google.com/cloud/answer/13463817"
+        },
+        {
+          "text": "Restricted scopes require an additional security assessment, repeated every year.",
+          "status": "sourced",
+          "source": "https://support.google.com/cloud/answer/13463817"
+        },
+        {
+          "text": "Unverified apps are capped at 100 new users over the project's lifetime.",
+          "status": "sourced",
+          "source": "https://support.google.com/cloud/answer/13463817"
+        },
+        {
+          "text": "Testing status is capped at 100 test users, and refresh tokens expire after 7 days in Testing.",
+          "status": "sourced",
+          "source": "https://developers.google.com/identity/protocols/oauth2/production-readiness/overview",
+          "note": "The 7-day figure appears on this page only as the limit that the Trusted status overrides."
+        },
+        {
+          "text": "Security assessment cost of $15,000 to $75,000.",
+          "status": "secondary",
+          "source": "https://www.nylas.com/blog/google-oauth-app-verification/",
+          "note": "From a vendor blog (2019, updated 2021). Google's FAQ says assessor prices are set independently, so treat this as a rough, possibly outdated range."
+        },
+        {
+          "text": "How long a security assessment takes.",
+          "status": "unverified",
+          "note": "Google does not publish a duration; the vendor blog says a few weeks to months."
+        }
+      ],
+      "sources": [
+        {
+          "title": "Sensitive scope verification (Google for Developers)",
+          "url": "https://developers.google.com/identity/protocols/oauth2/production-readiness/sensitive-scope-verification"
+        },
+        {
+          "title": "OAuth verification FAQ (Google Cloud Console Help)",
+          "url": "https://support.google.com/cloud/answer/13463817"
+        },
+        {
+          "title": "OAuth app state overview (Google for Developers)",
+          "url": "https://developers.google.com/identity/protocols/oauth2/production-readiness/overview"
+        },
+        {
+          "title": "Google OAuth Verification: Costs, Timelines, Process (Nylas, vendor blog)",
+          "url": "https://www.nylas.com/blog/google-oauth-app-verification/"
+        },
+        {
+          "title": "Composio: Managed authentication",
+          "url": "https://docs.composio.dev/toolkits/managed-auth"
+        }
+      ],
+      "last_checked": "2026-10-29",
+      "method": "Official documentation read, one vendor blog for cost context. No setup was attempted.",
+      "aliases": [
+        "gmail",
+        "google",
+        "googleapis"
+      ]
+    },
+    {
+      "slug": "linkedin",
+      "app": "LinkedIn",
+      "website": "https://www.linkedin.com/developers/",
+      "auth_type": "OAuth 2.0 with LinkedIn products and partner programmes",
+      "difficulty": "Varies",
+      "difficulty_reason": "Easy if you only need Sign in with LinkedIn or posting on a member's behalf. Hard for almost everything else: most permissions and partner programmes require explicit approval from LinkedIn.",
+      "time": {
+        "headline": "Under an hour for sign-in and posting; no published timeline for approved products, so budget weeks to months and confirm with LinkedIn",
+        "best_case": "About 30 to 60 minutes for open permissions",
+        "worst_case": "Unknown for partner programmes: LinkedIn's docs give no review timeline or criteria",
+        "basis": "The open-permission estimate is mine. The approval wait is genuinely unpublished."
+      },
+      "effort": "Low for open permissions. High and uncertain for partner products, which can require an approved partner relationship.",
+      "summary": "LinkedIn makes only a few permissions available to every developer. Everything else, such as advertising, Sales Navigator and talent integrations, needs LinkedIn's approval or partner status, and one set is closed entirely. Decide first which permissions your agent needs, because that decides whether this is an hour or a business-development project.",
+      "composio_note": "If Composio manages OAuth for LinkedIn, you may be able to use the open permissions without registering your own app. For gated products you will need your own approved app regardless.",
+      "before_you_start": [
+        "A list of the exact LinkedIn permissions your agent needs.",
+        "A LinkedIn developer account and, for most partner products, a business case you can explain to LinkedIn.",
+        "A clear answer to who your end users are, since partner programmes depend on the integration type."
+      ],
+      "steps": [
+        {
+          "title": "Map your use case to permissions",
+          "detail": "Open permissions: profile and email (Sign in with LinkedIn using OpenID Connect) and w_member_social (Share on LinkedIn: post, comment and like on a member's behalf). Anything else is gated.",
+          "who": "agent"
+        },
+        {
+          "title": "Create the app in the Developer Portal",
+          "detail": "Create an application in the LinkedIn Developer Portal. Details such as a required company Page are not covered by the documentation page read for this guide, so confirm them on screen.",
+          "who": "you"
+        },
+        {
+          "title": "Add open products",
+          "detail": "On your app's Products tab, add Sign in with LinkedIn using OpenID Connect and/or Share on LinkedIn. These can be enabled after creating the app.",
+          "who": "you"
+        },
+        {
+          "title": "Request gated products",
+          "detail": "For advertising, select your app under My Apps, open the Products tab and add the Advertising API product. Sales Navigator requires SNAP partner approval; Talent requires an ATS partner application. Compliance permissions are closed.",
+          "who": "you"
+        },
+        {
+          "title": "Implement the authorisation code flow",
+          "detail": "Send users to LinkedIn's authorisation endpoint with your client ID, redirect URI and scopes, then exchange the code for a token.",
+          "who": "agent"
+        }
+      ],
+      "approval": {
+        "required": true,
+        "process": "Open permissions are self-serve. All other permissions and partner programmes require explicit approval from LinkedIn. Advertising API is requested through the Developer Portal; Sales Navigator and Talent go through partner applications.",
+        "what_can_block": [
+          "Needing a permission that is only available to approved partners.",
+          "Needing a compliance permission, which LinkedIn lists as closed and not requestable.",
+          "No published criteria, so rejections may not explain why."
+        ],
+        "if_blocked": [
+          "Check whether an open permission, or a documented partner type, covers your use case.",
+          "Contact LinkedIn support or your partner representative, as the docs advise for Audiences permissions.",
+          "Redesign the agent to use only open permissions, for example posting on behalf of the signed-in member."
+        ]
+      },
+      "gotchas": [
+        "Open permissions are the only permissions available to every developer without special approval.",
+        "Compliance permissions (r_compliance, w_compliance) are listed for reference only: access is closed and cannot be requested.",
+        "Audiences permissions can be applied for only after becoming an approved Advertising API partner.",
+        "The documentation gives no review timeline or criteria for gated products, so any promised timeline you see elsewhere is unsourced."
+      ],
+      "agent_vs_you": {
+        "agent_can": [
+          "Map your agent's features to open versus gated permissions.",
+          "Draft the business case and use-case description for a partner application.",
+          "Implement and test the authorisation code flow for open permissions."
+        ],
+        "you_must": [
+          "Create the app and add products in your developer account.",
+          "Submit partner applications and talk to LinkedIn.",
+          "Wait for approval and answer follow-ups."
+        ]
+      },
+      "claims": [
+        {
+          "text": "Most permissions and partner programmes require explicit approval from LinkedIn; Open Permissions are the only ones available to all developers.",
+          "status": "sourced",
+          "source": "https://learn.microsoft.com/en-gb/linkedin/shared/authentication/getting-access"
+        },
+        {
+          "text": "Open permissions: profile and email via Sign in with LinkedIn using OpenID Connect, and w_member_social via Share on LinkedIn.",
+          "status": "sourced",
+          "source": "https://learn.microsoft.com/en-gb/linkedin/shared/authentication/getting-access"
+        },
+        {
+          "text": "Advertising API permissions must be approved; Sales Navigator requires SNAP partner approval; Talent requires an ATS partner application.",
+          "status": "sourced",
+          "source": "https://learn.microsoft.com/en-gb/linkedin/shared/authentication/getting-access"
+        },
+        {
+          "text": "Compliance permissions are closed and cannot be requested.",
+          "status": "sourced",
+          "source": "https://learn.microsoft.com/en-gb/linkedin/shared/authentication/getting-access"
+        },
+        {
+          "text": "How long approval for gated products takes, and the criteria used.",
+          "status": "unverified",
+          "note": "The page states neither. Treat any timeline you see elsewhere as unsourced."
+        },
+        {
+          "text": "Whether creating an app requires a LinkedIn company Page.",
+          "status": "unverified",
+          "note": "Not covered by the page read. Confirm in the Developer Portal."
+        }
+      ],
+      "sources": [
+        {
+          "title": "Getting access to LinkedIn APIs (Microsoft Learn)",
+          "url": "https://learn.microsoft.com/en-gb/linkedin/shared/authentication/getting-access"
+        },
+        {
+          "title": "Composio: Managed authentication",
+          "url": "https://docs.composio.dev/toolkits/managed-auth"
+        }
+      ],
+      "last_checked": "2026-10-29",
+      "method": "Official documentation read. No setup was attempted."
+    }
+  ]
+}
