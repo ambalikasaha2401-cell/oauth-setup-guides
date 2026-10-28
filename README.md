@@ -2,7 +2,7 @@
 
 Guides that tell a developer how hard it is to set up and get approved for a provider's OAuth app, how long to expect, what can block them, and what an agent can do versus what they must do. If an app is not in the library, an agent researches it live and generates a shareable guide.
 
-**Live demo:** _(add your deployed link here)_
+**Live demo:** _https://oauth-setup-guides-rouge.vercel.app
 
 ## The problem this addresses
 
@@ -60,7 +60,7 @@ Sample of claims I checked against the sources, and what I found:
 | LinkedIn: review timeline and criteria for gated products | **Not published.** Marked unverified. | n/a |
 | LinkedIn: whether app creation needs a company Page | Could not verify from the page read. Marked unverified. | n/a |
 
-The live generator was exercised in this repository with a mocked model response, which confirmed the parsing, validation, caching, rate limiting and error paths. I have not run it against a real model with web search. Run it with your key and read the sources it returns before trusting a generated guide.
+The live generator has been run once against a real model with web search, on Notion, and returned a complete guide. Generated guides are not hand-verified, so read the sources they cite before relying on them. I have not tested it across many apps, so some will fail or produce thin guides.
 
 ## Key decisions
 
