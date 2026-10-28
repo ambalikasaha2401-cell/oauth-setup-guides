@@ -16,7 +16,6 @@
       },
       "effort": "Low. One form and a callback URL. No documents to submit.",
       "summary": "You can register a GitHub OAuth app yourself in minutes. The real decision is whether to build a GitHub App instead, which GitHub recommends for most new integrations.",
-      "composio_note": "If Composio manages OAuth for GitHub, you can skip registering your own app until you need your own consent-screen name, custom scopes or a separate rate-limit quota.",
       "before_you_start": [
         "A GitHub account that will own the app (a personal account or an organisation you administer).",
         "Your app's public homepage URL.",
@@ -143,7 +142,12 @@
         }
       ],
       "last_checked": "2026-10-29",
-      "method": "Official documentation read. No setup was attempted."
+      "method": "Official documentation read. No setup was attempted.",
+      "composio": {
+        "status": "managed",
+        "note": "Composio's docs name GitHub among the toolkits where Composio registers and maintains the OAuth app. Bring your own app when you need your own consent-screen name, custom scopes or a dedicated rate-limit quota.",
+        "source": "https://docs.composio.dev/docs/authentication/custom-app-vs-managed-app"
+      }
     },
     {
       "slug": "slack",
@@ -151,16 +155,15 @@
       "website": "https://slack.com",
       "auth_type": "OAuth 2.0 (v2) Slack app",
       "difficulty": "Moderate",
-      "difficulty_reason": "Quick for one workspace. Public distribution adds a checklist, HTTPS on every URL and, in some workspaces, admin approval. A Marketplace listing adds a review with no published timeline.",
+      "difficulty_reason": "Quick for one workspace. Public distribution adds a checklist, HTTPS on every URL and, in some workspaces, admin approval. A Marketplace listing adds a staged review that Slack says can take up to 10 business days for first feedback and up to 10 weeks for functional review.",
       "time": {
-        "headline": "About 1 hour for your own workspace; days if you distribute publicly; Marketplace review time is not published",
+        "headline": "About 1 hour for your own workspace; days to activate public distribution; a Marketplace listing takes weeks (up to 10 business days to first feedback, then up to 10 weeks)",
         "best_case": "30 to 60 minutes (single workspace)",
-        "worst_case": "Unknown for the Marketplace: Slack's docs give no review timeline. Plan for weeks and ask Slack.",
-        "basis": "Estimates for setup; the Marketplace timeline is genuinely unknown."
+        "worst_case": "Up to 10 weeks of functional review for a new Marketplace app, after up to 10 business days for preliminary feedback. Slack says it cannot accelerate review and that volume affects it.",
+        "basis": "Setup times are estimates. Marketplace review figures are from Slack's Marketplace review guide (stated as 'up to', not guaranteed)."
       },
       "effort": "Medium. A real OAuth flow to implement, an HTTPS redirect URL and a distribution checklist.",
       "summary": "Anyone can create a Slack app and install it in a workspace they control. Letting other workspaces install it requires activating public distribution and, depending on the workspace, admin approval. Marketplace listing is optional but recommended for commercial apps.",
-      "composio_note": "If Composio manages OAuth for Slack, your users see Composio's app on the consent screen. Register your own only if you need your own name, scopes, or Marketplace listing.",
       "before_you_start": [
         "A Slack workspace you control, for development.",
         "An HTTPS redirect URL (Slack requires SSL on OAuth redirect and request URLs).",
@@ -206,7 +209,7 @@
       ],
       "approval": {
         "required": false,
-        "process": "No Slack review is needed to install in your own workspace or to activate public distribution. Marketplace listing is reviewed. Individual workspaces may require admin approval to install your app.",
+        "process": "No Slack review is needed to install in your own workspace or to activate public distribution. A Marketplace listing goes through automated checks, a preliminary review and a functional review. Individual workspaces may require admin approval to install your app.",
         "what_can_block": [
           "A workspace that only lets admins authorise apps, or only Marketplace-listed apps.",
           "Requesting more scopes than you need.",
@@ -215,7 +218,7 @@
         "if_blocked": [
           "Use the admin approval request flow and send the admin your scope list and purpose.",
           "Consider a Marketplace listing if customers' workspaces only allow listed apps.",
-          "Ask Slack's developer support about review status; the docs give no timeline."
+          "Ask Slack's developer support about review status; the review guide gives only 'up to' figures."
         ]
       },
       "gotchas": [
@@ -265,10 +268,10 @@
           "source": "https://docs.slack.dev/app-management/distribution/"
         },
         {
-          "text": "Marketplace apps are reviewed; the page gives no review timeline.",
+          "text": "Marketplace review stages are automated checks, a preliminary review (up to 10 business days for feedback) and a functional review (up to 10 weeks for new apps, 6 weeks for resubmitted published apps).",
           "status": "sourced",
-          "source": "https://docs.slack.dev/app-management/distribution/",
-          "note": "The missing timeline is itself a finding: it is not published there."
+          "source": "https://docs.slack.dev/slack-marketplace/slack-marketplace-review-guide",
+          "note": "Slack states these as upper bounds and says volume affects turnaround. An earlier version of this guide said no timeline was published. That was wrong: the distribution page is silent, but the Marketplace review guide gives these figures."
         },
         {
           "text": "Any difference in API rate limits between listed and unlisted apps.",
@@ -293,10 +296,19 @@
         {
           "title": "Composio: Managed authentication",
           "url": "https://docs.composio.dev/toolkits/managed-auth"
+        },
+        {
+          "title": "Slack Marketplace review guide",
+          "url": "https://docs.slack.dev/slack-marketplace/slack-marketplace-review-guide"
         }
       ],
       "last_checked": "2026-10-29",
-      "method": "Official documentation read. No setup was attempted."
+      "method": "Official documentation read. No setup was attempted.",
+      "composio": {
+        "status": "managed",
+        "note": "Composio's docs name Slack among the toolkits with a Composio-maintained OAuth app. Users see Composio on the consent screen until you bring your own app. Bring your own for your own name or scopes.",
+        "source": "https://docs.composio.dev/docs/authentication/custom-app-vs-managed-app"
+      }
     },
     {
       "slug": "google-gmail",
@@ -313,7 +325,6 @@
       },
       "effort": "High. Domain ownership, public homepage and privacy policy, written scope justifications, a demo video, and for restricted scopes a third-party security assessment.",
       "summary": "You can build and test with up to 100 named test users immediately. To let the public connect with sensitive or restricted scopes, you must pass Google's verification. Plan the verification and, for Gmail, the security assessment before you commit to a launch date.",
-      "composio_note": "If Composio manages OAuth for Google, you can launch on Composio's verified app. Register your own only if you need your own consent screen, custom scopes or separate quota, and then you carry the verification and assessment yourself.",
       "before_you_start": [
         "A Google Cloud project.",
         "A domain you own, verified in Google Search Console, with a public homepage and a privacy policy on the same domain.",
@@ -479,7 +490,12 @@
         "gmail",
         "google",
         "googleapis"
-      ]
+      ],
+      "composio": {
+        "status": "managed",
+        "note": "Composio's docs name Gmail as a managed toolkit. If you need your own consent screen or scopes beyond the defaults, you register your own Google app, and the verification steps in this guide then apply to you.",
+        "source": "https://docs.composio.dev/docs/authentication/custom-app-vs-managed-app"
+      }
     },
     {
       "slug": "linkedin",
@@ -496,7 +512,6 @@
       },
       "effort": "Low for open permissions. High and uncertain for partner products, which can require an approved partner relationship.",
       "summary": "LinkedIn makes only a few permissions available to every developer. Everything else, such as advertising, Sales Navigator and talent integrations, needs LinkedIn's approval or partner status, and one set is closed entirely. Decide first which permissions your agent needs, because that decides whether this is an hour or a business-development project.",
-      "composio_note": "If Composio manages OAuth for LinkedIn, you may be able to use the open permissions without registering your own app. For gated products you will need your own approved app regardless.",
       "before_you_start": [
         "A list of the exact LinkedIn permissions your agent needs.",
         "A LinkedIn developer account and, for most partner products, a business case you can explain to LinkedIn.",
@@ -604,7 +619,11 @@
         }
       ],
       "last_checked": "2026-10-29",
-      "method": "Official documentation read. No setup was attempted."
+      "method": "Official documentation read. No setup was attempted.",
+      "composio": {
+        "status": "unknown",
+        "note": "I could not find a Composio page that says whether LinkedIn has a managed OAuth app. Check Composio's toolkit page before registering your own."
+      }
     }
   ]
 }

@@ -5,7 +5,8 @@
   const link = (u, t) => (safeUrl(u) ? `<a href="${esc(u)}" target="_blank" rel="noopener noreferrer">${esc(t || u)}</a>` : esc(t || ""));
   const list = a => (a && a.length ? `<ul class="tight">${a.map(x => `<li>${esc(x)}</li>`).join("")}</ul>` : "<p class='fine'>None listed.</p>");
   const WHO = { agent: "Agent", you: "You", either: "Agent + you" };
-  const STATUS = { sourced: "Sourced", secondary: "Secondary source", conflict: "Sources disagree", unverified: "Unverified" };
+  const STATUS = { sourced: "Sourced", secondary: "Secondary source", conflict: "Sources disagree", unverified: "Unverified", contradicted: "Contradicted by official docs" };
+  const COMPOSIO = { managed: "Composio manages this app", own_app_required: "Bring your own app", unknown: "Not confirmed" };
 
   let library = [];
   let checked = "";
@@ -38,7 +39,7 @@
       <button type="button" class="ghost" id="copyMd">Copy as Markdown</button>
       <button type="button" class="ghost" onclick="window.print()">Print or save as PDF</button>
     </div>
-    ${g.composio_note ? `<p><b>Do you need your own app at all?</b> ${esc(g.composio_note)}</p>` : ""}
+    ${g.composio ? `<div class="composio"><b>With Composio</b><span class="chip ${esc(g.composio.status)}">${esc(COMPOSIO[g.composio.status] || g.composio.status)}</span><p>${esc(g.composio.note || "")} ${g.composio.source ? link(g.composio.source, "Source") : ""}</p></div>` : g.composio_note ? `<p><b>Do you need your own app at all?</b> ${esc(g.composio_note)}</p>` : ""}
     <h2>Before you start</h2>${list(g.before_you_start)}
     <h2>Steps</h2>
     <ol class="steps">${(g.steps || []).map(s => `<li><b>${esc(s.title)}</b><span class="who ${esc(s.who)}">${esc(WHO[s.who] || s.who)}</span><div>${esc(s.detail)}</div></li>`).join("")}</ol>
@@ -118,8 +119,18 @@
       const r = await fetch("/api/generate", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ app: q }) });
       const data = await r.json();
       if (!r.ok) throw new Error(data.error || "Something went wrong.");
+      let guide = data.guide;
+      st.textContent = "Guide drafted. Second pass: checking unconfirmed claims against the provider's official pages. About 30 seconds more.";
+      try {
+        const v = await fetch("/api/verify", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ app: guide.app, website: guide.website, claims: guide.claims }) });
+        const vd = await v.json();
+        if (!v.ok) throw new Error(vd.error || "Second pass failed.");
+        guide = { ...guide, claims: vd.claims, method: guide.method + (vd.checked ? ` A second pass re-checked ${vd.checked} unconfirmed claim${vd.checked === 1 ? "" : "s"} against official pages.` : "") };
+      } catch (verr) {
+        guide = { ...guide, method: guide.method + " The second pass did not run (" + verr.message + "), so unconfirmed claims were not re-checked." };
+      }
       st.textContent = "";
-      location.hash = "#/g/" + enc(data.guide);
+      location.hash = "#/g/" + enc(guide);
     } catch (err) {
       st.className = "status err";
       st.textContent = err.message;
