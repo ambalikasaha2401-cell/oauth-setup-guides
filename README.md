@@ -69,7 +69,8 @@ On 29 Oct 2026 I read Notion's official public connections and authorization pag
 - 1 partly matched: "Notion has no OAuth scopes". Notion's docs use "capabilities" selected at creation, which the guide leaves out.
 - 1 contradicted by an official page: "Notion has no refresh tokens and the access token doesn't expire". Notion's API reference documents a Refresh a token endpoint and returns a refresh_token. The guide marked this "Sources disagree" but said it found no official statement, which was wrong. This is a real miss by the live generator: it cited the right official page in its sources but did not use it to settle the claim.
 - 2 consistent with silence: no published review timeline or fee, and the owner-role requirement. The guide marked both Unverified.
-
+- 1 not confirmed: "client secret may be shown only once". Notion's official page doesn't state it. Only an older secondary tutorial does, and the guide labelled it Secondary source with an age warning.
+  
 The confidence labels were mostly right: the unsupported claims were marked Unverified or Secondary source. The refresh-token claim was the exception. I checked the docs only. I did not create a Notion connection.
 
 ## Key decisions
