@@ -85,7 +85,10 @@ The confidence labels were mostly right: the unsupported claims were marked Unve
 
 `api/verify.js` receives the claims from a generated guide and picks up to six that are conflicted, unverified, secondary, or that say something does not exist. It asks the model to search the provider's official documentation, including API reference pages, and return one verdict per claim: confirmed, contradicted, or not found. The server only accepts a source as official if its host contains the provider's name. The generator prompt also now tells the first pass to check the API reference before writing that something does not exist.
 
-Tested with a mocked model response: claim selection, rejection of non-official sources, contradicted and not-found handling, input validation and the hourly limit. **I have not run the second pass against a real model with web search**, so whether it catches the Notion refresh-token miss is not yet shown.
+Tested with mocked responses (claim selection, rejection of non-official sources, partly/contradicted/not-found handling, input validation, the hourly limit) and then once against the real model on Notion on 29 Oct 2026. The real run showed the second pass working: it re-checked 6 claims, and several now carry "Confirmed in a second pass against an official page". It also showed two flaws, which I fixed afterwards and have not re-run on the real model:
+
+- A claim that was only partly wrong (a redirect URI rule list) was shown as "Contradicted by official docs". I added a "partly" verdict and a "Partly contradicted" label.
+- A generic Composio statement ("most toolkits use managed auth") had been accepted as a sourced claim about Notion. The second pass now also checks Composio claims, a confirmation must name the specific provider, and the "With Composio" box falls back to "Not confirmed" unless it cites a Composio page that names the provider.
 
 ## Key decisions
 

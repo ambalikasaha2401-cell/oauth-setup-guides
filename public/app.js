@@ -5,7 +5,7 @@
   const link = (u, t) => (safeUrl(u) ? `<a href="${esc(u)}" target="_blank" rel="noopener noreferrer">${esc(t || u)}</a>` : esc(t || ""));
   const list = a => (a && a.length ? `<ul class="tight">${a.map(x => `<li>${esc(x)}</li>`).join("")}</ul>` : "<p class='fine'>None listed.</p>");
   const WHO = { agent: "Agent", you: "You", either: "Agent + you" };
-  const STATUS = { sourced: "Sourced", secondary: "Secondary source", conflict: "Sources disagree", unverified: "Unverified", contradicted: "Contradicted by official docs" };
+  const STATUS = { sourced: "Sourced", secondary: "Secondary source", conflict: "Sources disagree", unverified: "Unverified", contradicted: "Contradicted by official docs", partial: "Partly contradicted" };
   const COMPOSIO = { managed: "Composio manages this app", own_app_required: "Bring your own app", unknown: "Not confirmed" };
 
   let library = [];

@@ -28,7 +28,7 @@ Rules:
 - Every factual claim must come from a source you found. Put the important claims in "claims" with a status: "sourced" (official docs), "secondary" (blog, vendor, forum), "conflict" (sources disagree: say how in note), or "unverified" (you could not confirm).
 - Never invent review times, fees, limits or steps. If the provider does not publish a timeline, say so in the time fields and mark it unverified.
 - Before you write that something does not exist ("no refresh tokens", "no review", "no scopes"), look for it in the official API reference. Say "not found" only after you have checked there.
-- "composio": check docs.composio.dev for whether Composio provides a managed OAuth app for this provider. Use "managed" only if a Composio page says so, "own_app_required" only if a Composio page says you must bring your own app, otherwise "unknown". Never guess.
+- "composio": check docs.composio.dev for whether Composio provides a managed OAuth app for this provider. Use "managed" only if a Composio page says so, "own_app_required" only if a Composio page says you must bring your own app, otherwise "unknown". Never guess. A general statement that Composio uses managed auth for most toolkits does not count: it must name this provider. A claim about Composio is "sourced" only if a Composio page names this provider.
 - You have NOT performed the setup yourself. Do not say you tested anything. Time estimates that are your own must say "Estimate" in time.basis.
 - "who" in each step is "agent" when an AI agent can do it (drafting, coding, checking), "you" when the developer must act (sign-in, submitting forms, payments, identity checks), or "either".
 - Be concise. Steps should be concrete and ordered. Keep each string under 300 characters.
@@ -44,6 +44,14 @@ function validate(g) {
   g.gotchas = g.gotchas || [];
   const c = g.composio;
   if (!c || !["managed", "own_app_required", "unknown"].includes(c.status)) g.composio = { status: "unknown", note: "Not checked." };
+  else if (c.status !== "unknown") {
+    // Keep a definite Composio answer only if it cites a Composio page and names this provider.
+    const first = String(g.app || "").toLowerCase().split(/[ (]/)[0];
+    const named = first.length >= 3 && String(c.note || "").toLowerCase().includes(first);
+    let onComposio = false;
+    try { onComposio = new URL(c.source).hostname.endsWith("composio.dev"); } catch {}
+    if (!named || !onComposio) g.composio = { status: "unknown", note: "Composio's docs describe managed auth in general, but I could not confirm it for " + g.app + ". Check Composio's toolkit page before deciding." };
+  }
   return g;
 }
 
