@@ -61,6 +61,16 @@ Sample of claims I checked against the sources, and what I found:
 | LinkedIn: whether app creation needs a company Page | Could not verify from the page read. Marked unverified. | n/a |
 
 The live generator has been run once against a real model with web search, on Notion, and returned a complete guide. Generated guides are not hand-verified, so read the sources they cite before relying on them. I have not tested it across many apps, so some will fail or produce thin guides.
+## Claim check: Notion live guide
+
+On 29 Oct 2026 I read Notion's official public connections and authorization pages and compared them with 8 claims in the live-generated Notion guide.
+
+- 5 matched: creation steps, installation scope options and that scope can't be changed, authorization URL location, token endpoint with Basic auth, and when redirect_uri is required.
+- 1 partly matched: "Notion has no OAuth scopes". Notion's docs use "capabilities" selected at creation, which the guide leaves out.
+- 1 not confirmed: "client secret shown only once". Only an older secondary tutorial says this, and the guide labelled it that way.
+- 2 consistent with silence: no published review timeline or fee, and the owner-role requirement. The guide marked both Unverified.
+
+The guide's confidence labels matched what I found. I checked the docs only. I did not create a Notion connection.
 
 ## Key decisions
 
@@ -79,3 +89,6 @@ The live generator has been run once against a real model with web search, on No
 - Provider policies change. Guides show the date they were checked, and the library should be re-checked regularly.
 - Share links for generated guides are long, and in-memory caching and rate limits reset when the server restarts.
 - Only four library guides, not 100.
+
+
+
