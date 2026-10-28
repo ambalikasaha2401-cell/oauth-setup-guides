@@ -88,8 +88,7 @@ The confidence labels were mostly right: the unsupported claims were marked Unve
 Tested with mocked responses (claim selection, rejection of non-official sources, partly/contradicted/not-found handling, input validation, the hourly limit) and then once against the real model on Notion on 29 Oct 2026. The real run showed the second pass working: it re-checked 6 claims, and several now carry "Confirmed in a second pass against an official page". It also showed two flaws, which I fixed afterwards and have not re-run on the real model:
 
 - A claim that was only partly wrong (a redirect URI rule list) was shown as "Contradicted by official docs". I added a "partly" verdict and a "Partly contradicted" label.
-- A generic Composio statement ("most toolkits use managed auth") had been accepted as a sourced claim about Notion. The second pass now also checks Composio claims, a confirmation must name the specific provider, and the "With Composio" box falls back to "Not confirmed" unless it cites a Composio page that names the provider.
-
+- A re-run of the same Notion lookup later on 29 Oct 2026, after the fixes, cited the Refresh a token endpoint as Sourced and showed the blog's "no refresh token" claim as Sources disagree, with a note that the blog is likely outdated. One run is not proof it will always happen.
 ## Key decisions
 
 - **Four apps chosen for variety in approval friction**, not popularity. A developer learns the most from seeing "no review", "review with no published timeline", "weeks plus an annual assessment" and "depends on the permission" side by side.
